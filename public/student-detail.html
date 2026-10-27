@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Detail | StudentPro</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar-header" href="/dashboard.html" aria-label="StudentPro home">
+      <span class="brand-mark">S</span><span class="brand-copy"><strong>StudentPro</strong><small>Academic workspace</small></span>
+    </a>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <span class="nav-section-label">Workspace</span>
+      <a href="/dashboard.html" class="nav-item"><span class="nav-icon">&#9632;</span>Overview</a>
+      <a href="/students.html" class="nav-item"><span class="nav-icon">&#9787;</span>Students</a>
+      <a href="/semester-results.html" class="nav-item"><span class="nav-icon">&#9636;</span>Semester results</a>
+      <a href="/subject-marks.html" class="nav-item"><span class="nav-icon">&#9998;</span>Subject marks</a>
+      <a href="/academic-gaps.html" class="nav-item"><span class="nav-icon">&#9888;</span>Academic gaps</a>
+      <span class="nav-section-label nav-section-spaced">Engagement</span>
+      <a href="/seminars.html" class="nav-item"><span class="nav-icon">&#9733;</span>Seminars &amp; activities</a>
+      <a href="/reports.html" class="nav-item"><span class="nav-icon">&#9776;</span>Reports &amp; exports</a>
+      <a href="/settings.html" class="nav-item"><span class="nav-icon">&#9881;</span>Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div class="admin-avatar">A</div><div><strong id="current-user">Admin</strong><small>Administrator</small></div><a href="#" id="logout-btn" aria-label="Log out">&#8594;</a></div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="page-title">
+        <h1>Student Detail</h1>
+        <p>Full student profile and academic record</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-info">👤 <span id="current-user">Admin</span></div>
+      </div>
+    </header>
+
+    <div class="content-body">
+      <a href="/students.html" class="back-link">← Back to Students</a>
+
+      <!-- Profile Header -->
+      <div class="profile-card" id="profile-header">
+        <div class="profile-avatar" id="profile-avatar">—</div>
+        <div class="profile-info">
+          <h2 id="profile-name">Loading...</h2>
+          <p id="profile-meta">Roll No: — | Department: —</p>
+          <span class="badge" id="profile-status">—</span>
+          <button class="btn-secondary" id="edit-profile-btn" type="button" style="margin-top:.75rem">Edit Profile</button>
+        </div>
+        <div class="profile-cgpa">
+          <div class="cgpa-value" id="profile-cgpa">—</div>
+          <div class="cgpa-label">CGPA</div>
+        </div>
+      </div>
+
+      <div id="drop-year-indicator" class="info-card" style="display:none;margin-top:1rem;border-left:4px solid #dc2626">
+        <div class="info-card-icon">⚠️</div><div class="info-card-body"><strong>Drop year recorded</strong><p id="drop-year-summary"></p></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-container">
+        <div class="tab-list">
+          <button class="tab-btn active" data-tab="personal">Personal Info</button>
+          <button class="tab-btn" data-tab="semester">Semester Results</button>
+          <button class="tab-btn" data-tab="seminars">Seminars &amp; Activities</button>
+          <button class="tab-btn" data-tab="gaps">Academic Gaps</button>
+        </div>
+
+        <!-- Personal Info Tab -->
+        <div class="tab-content active" id="tab-personal">
+          <div class="info-grid" id="personal-info-grid">
+            <p class="loading-cell">Loading...</p>
+          </div>
+        </div>
+
+        <!-- Semester Results Tab -->
+        <div class="tab-content" id="tab-semester">
+          <div class="chart-card" style="margin-bottom:1.5rem;">
+            <div class="card-header"><h3>SGPA and CGPA Progression</h3></div>
+            <div class="chart-container" style="height:200px;">
+              <canvas id="sgpa-detail-chart"></canvas>
+            </div>
+            <p class="text-muted">Red triangle markers identify semesters with an academic gap record. A drop-year record appears above the profile.</p>
+          </div>
+          <div id="semester-results-container">
+            <p class="loading-cell">Loading...</p>
+          </div>
+        </div>
+
+        <!-- Seminars & Activities Tab -->
+        <div class="tab-content" id="tab-seminars">
+          <div class="sub-tab-list">
+            <button class="sub-tab-btn active" data-subtab="seminars-list">Seminars</button>
+            <button class="sub-tab-btn" data-subtab="activities-list">Activities</button>
+          </div>
+          <div class="sub-tab-content active" id="seminars-list">
+            <table class="data-table">
+              <thead><tr><th>Date</th><th>Title</th><th>Organized By</th><th>Scope</th><th>Type</th></tr></thead>
+              <tbody id="seminars-detail-tbody"><tr><td colspan="4" class="loading-cell">Loading...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="sub-tab-content" id="activities-list">
+            <table class="data-table">
+              <thead><tr><th>Date</th><th>Activity</th><th>Portfolio Group</th><th>Category</th><th>Description</th></tr></thead>
+              <tbody id="activities-detail-tbody"><tr><td colspan="4" class="loading-cell">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Academic Gaps Tab -->
+        <div class="tab-content" id="tab-gaps">
+          <table class="data-table">
+            <thead><tr><th>Record Type</th><th>Semester</th><th>Period</th><th>Description</th><th>Date Identified</th></tr></thead>
+            <tbody id="gaps-detail-tbody"><tr><td colspan="5" class="loading-cell">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="profile-modal" style="display:none">
+  <div class="modal-box modal-lg">
+    <div class="modal-header"><h3>Edit Student Profile</h3><button class="modal-close" type="button" onclick="closeModal('profile-modal')">×</button></div>
+    <div class="modal-body">
+      <form id="profile-form" onsubmit="event.preventDefault(); saveProfile(); return false;">
+        <div class="form-row"><div class="form-group"><label>Roll No *</label><input id="p-roll-no" required></div><div class="form-group"><label>Full Name *</label><input id="p-full-name" required></div></div>
+        <div class="form-row"><div class="form-group"><label>Date of Birth</label><input id="p-dob" type="date"></div><div class="form-group"><label>Gender</label><select id="p-gender"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option></select></div></div>
+        <div class="form-row"><div class="form-group"><label>Department *</label><select id="p-department" required><option value="">Select department</option><option value="ECE">ECE</option><option value="CSE">CSE</option><option value="ME">ME</option><option value="EE">EE</option><option value="IT">IT</option></select></div><div class="form-group"><label>Status</label><select id="p-status"><option>Active</option><option>Inactive</option></select></div></div>
+        <div class="form-row"><div class="form-group"><label>Email</label><input id="p-email" type="email"></div><div class="form-group"><label>Phone</label><input id="p-phone" type="tel"></div></div>
+        <div class="form-group"><label>Address</label><textarea id="p-address" rows="2"></textarea></div>
+        <div class="form-row"><div class="form-group"><label>SSC %</label><input id="p-ssc" type="number" min="0" max="100" step="0.01"></div><div class="form-group"><label>HSC %</label><input id="p-hsc" type="number" min="0" max="100" step="0.01"></div><div class="form-group"><label>Diploma %</label><input id="p-diploma" type="number" min="0" max="100" step="0.01"></div></div>
+      </form>
+    </div>
+    <div class="modal-footer"><button class="btn-secondary" type="button" onclick="closeModal('profile-modal')">Cancel</button><button class="btn-primary" id="save-profile-btn" type="button" onclick="saveProfile()">Save Profile</button></div>
+  </div>
+</div>
+
+<script src="/js/common.js"></script>
+<script src="/js/student-detail.js"></script>
+</body>
+</html>

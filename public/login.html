@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | StudentPro</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="login-page">
+  <div class="login-card">
+    <div class="login-logo">🎓 <span>StudentPro</span></div>
+    <p class="login-subtitle">Student Academic Progression &amp; Portfolio System</p>
+    <h2>Login</h2>
+    <div id="login-error" class="error-msg" style="display:none"></div>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username" value="admin" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" value="admin123" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-primary btn-full" id="login-btn">
+        <span id="btn-text">Login</span>
+      </button>
+    </form>
+    <p class="login-footer">© 2026 StudentPro - Student Academic Progression and Portfolio System. All rights reserved.</p>
+  </div>
+
+  <script>
+    // If already logged in, redirect
+    fetch('/api/me').then(r => r.json()).then(d => {
+      if (d.success) window.location.href = '/dashboard.html';
+    }).catch(() => {});
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('login-btn');
+      const btnText = document.getElementById('btn-text');
+      const errEl = document.getElementById('login-error');
+      errEl.style.display = 'none';
+      btnText.textContent = 'Logging in...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: document.getElementById('username').value.trim(),
+            password: document.getElementById('password').value
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          window.location.href = '/dashboard.html';
+        } else {
+          errEl.textContent = data.error || 'Login failed. Please try again.';
+          errEl.style.display = 'block';
+          btnText.textContent = 'Login';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        errEl.textContent = 'Server error. Please try again.';
+        errEl.style.display = 'block';
+        btnText.textContent = 'Login';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports | StudentPro</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar-header" href="/dashboard.html" aria-label="StudentPro home">
+      <span class="brand-mark">S</span><span class="brand-copy"><strong>StudentPro</strong><small>Academic workspace</small></span>
+    </a>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <span class="nav-section-label">Workspace</span>
+      <a href="/dashboard.html" class="nav-item"><span class="nav-icon">&#9632;</span>Overview</a>
+      <a href="/students.html" class="nav-item"><span class="nav-icon">&#9787;</span>Students</a>
+      <a href="/semester-results.html" class="nav-item"><span class="nav-icon">&#9636;</span>Semester results</a>
+      <a href="/subject-marks.html" class="nav-item"><span class="nav-icon">&#9998;</span>Subject marks</a>
+      <a href="/academic-gaps.html" class="nav-item"><span class="nav-icon">&#9888;</span>Academic gaps</a>
+      <span class="nav-section-label nav-section-spaced">Engagement</span>
+      <a href="/seminars.html" class="nav-item"><span class="nav-icon">&#9733;</span>Seminars &amp; activities</a>
+      <a href="/reports.html" class="nav-item"><span class="nav-icon">&#9776;</span>Reports &amp; exports</a>
+      <a href="/settings.html" class="nav-item"><span class="nav-icon">&#9881;</span>Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div class="admin-avatar">A</div><div><strong id="current-user">Admin</strong><small>Administrator</small></div><a href="#" id="logout-btn" aria-label="Log out">&#8594;</a></div>
+  </aside>
+  <main class="main-content">
+    <header class="top-bar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="page-title">
+        <h1>Reports</h1>
+        <p>Academic progress reports and data exports</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-info">👤 <span id="current-user">Admin</span></div>
+      </div>
+    </header>
+    <div class="content-body">
+      <!-- Progress Report -->
+      <div class="page-card">
+        <div class="card-header">
+          <h3>📊 Department Progress Report</h3>
+          <button class="btn-secondary btn-sm" id="export-csv-btn">⬇️ Export CSV</button>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr><th>Department</th><th>Student Count</th><th>Average CGPA</th><th>Status</th></tr>
+            </thead>
+            <tbody id="progress-tbody">
+              <tr><td colspan="4" class="loading-cell">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Google Sheets Export -->
+      <div class="page-card" style="margin-top:1.5rem">
+        <div class="card-header">
+          <h3>📋 Google Sheets Export</h3>
+        </div>
+        <div class="info-card info-card-blue">
+          <div class="info-card-icon">📊</div>
+          <div class="info-card-body">
+            <h4>Google Sheets Sync</h4>
+            <p id="google-sync-status">Sync is inactive. Configure a Google service-account key and spreadsheet ID, then restart the server.</p>
+            <button class="btn-secondary" id="sync-google-sheets-btn" disabled>Sync Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/js/common.js"></script>
+<script src="/js/reports.js"></script>
+</body>
+</html>

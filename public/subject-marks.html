@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subject Marks | StudentPro</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar-header" href="/dashboard.html" aria-label="StudentPro home">
+      <span class="brand-mark">S</span><span class="brand-copy"><strong>StudentPro</strong><small>Academic workspace</small></span>
+    </a>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <span class="nav-section-label">Workspace</span>
+      <a href="/dashboard.html" class="nav-item"><span class="nav-icon">&#9632;</span>Overview</a>
+      <a href="/students.html" class="nav-item"><span class="nav-icon">&#9787;</span>Students</a>
+      <a href="/semester-results.html" class="nav-item"><span class="nav-icon">&#9636;</span>Semester results</a>
+      <a href="/subject-marks.html" class="nav-item"><span class="nav-icon">&#9998;</span>Subject marks</a>
+      <a href="/academic-gaps.html" class="nav-item"><span class="nav-icon">&#9888;</span>Academic gaps</a>
+      <span class="nav-section-label nav-section-spaced">Engagement</span>
+      <a href="/seminars.html" class="nav-item"><span class="nav-icon">&#9733;</span>Seminars &amp; activities</a>
+      <a href="/reports.html" class="nav-item"><span class="nav-icon">&#9776;</span>Reports &amp; exports</a>
+      <a href="/settings.html" class="nav-item"><span class="nav-icon">&#9881;</span>Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div class="admin-avatar">A</div><div><strong id="current-user">Admin</strong><small>Administrator</small></div><a href="#" id="logout-btn" aria-label="Log out">&#8594;</a></div>
+  </aside>
+  <main class="main-content">
+    <header class="top-bar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="page-title">
+        <h1>Subject Marks</h1>
+        <p>View marks for a specific student and semester</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-info">👤 <span id="current-user">Admin</span></div>
+      </div>
+    </header>
+    <div class="content-body">
+      <div class="page-card">
+        <div class="selector-row">
+          <div class="form-group" style="flex:1;max-width:300px">
+            <label>Select Student</label>
+            <select id="student-select">
+              <option value="">-- Select student --</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1;max-width:200px">
+            <label>Select Semester</label>
+            <select id="semester-select">
+              <option value="">-- Semester --</option>
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4">Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
+            </select>
+          </div>
+          <button class="btn-primary" id="view-btn">View Marks</button>
+        </div>
+      </div>
+
+      <div id="marks-section" style="display:none">
+        <div class="page-card">
+          <div class="card-header">
+            <h3 id="marks-title">Subject Marks</h3>
+            <div class="sgpa-badge">SGPA: <strong id="sgpa-display">—</strong></div>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr><th>Component</th><th>Subject Code</th><th>Subject Name</th><th>Marks</th><th>Grade</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="marks-tbody">
+                <tr><td colspan="6" class="loading-cell">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="no-selection-msg" class="empty-state">
+        <div class="empty-icon">📝</div>
+        <p>Select a student and semester to view subject marks.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/js/common.js"></script>
+<script src="/js/subject-marks.js"></script>
+</body>
+</html>

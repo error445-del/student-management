@@ -1,0 +1,7 @@
+node_modules/
+data/
+.env
+*.crdownload
+*service-account*.json
+*credentials*.json
+august-journey-512018-h8-907c7e7ca600.json

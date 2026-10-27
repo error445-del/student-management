@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seminars &amp; Activities | StudentPro</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar-header" href="/dashboard.html" aria-label="StudentPro home">
+      <span class="brand-mark">S</span><span class="brand-copy"><strong>StudentPro</strong><small>Academic workspace</small></span>
+    </a>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <span class="nav-section-label">Workspace</span>
+      <a href="/dashboard.html" class="nav-item"><span class="nav-icon">&#9632;</span>Overview</a>
+      <a href="/students.html" class="nav-item"><span class="nav-icon">&#9787;</span>Students</a>
+      <a href="/semester-results.html" class="nav-item"><span class="nav-icon">&#9636;</span>Semester results</a>
+      <a href="/subject-marks.html" class="nav-item"><span class="nav-icon">&#9998;</span>Subject marks</a>
+      <a href="/academic-gaps.html" class="nav-item"><span class="nav-icon">&#9888;</span>Academic gaps</a>
+      <span class="nav-section-label nav-section-spaced">Engagement</span>
+      <a href="/seminars.html" class="nav-item"><span class="nav-icon">&#9733;</span>Seminars &amp; activities</a>
+      <a href="/reports.html" class="nav-item"><span class="nav-icon">&#9776;</span>Reports &amp; exports</a>
+      <a href="/settings.html" class="nav-item"><span class="nav-icon">&#9881;</span>Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div class="admin-avatar">A</div><div><strong id="current-user">Admin</strong><small>Administrator</small></div><a href="#" id="logout-btn" aria-label="Log out">&#8594;</a></div>
+  </aside>
+  <main class="main-content">
+    <header class="top-bar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="page-title">
+        <h1>Seminars &amp; Activities</h1>
+        <p>Track student portfolio, seminars and extracurricular activities</p>
+      </div>
+      <div class="top-bar-right">
+        <div class="user-info">👤 <span id="current-user">Admin</span></div>
+      </div>
+    </header>
+    <div class="content-body">
+      <div class="page-card">
+        <div class="selector-row">
+          <div class="form-group" style="flex:1;max-width:350px">
+            <label>Select Student</label>
+            <select id="student-select">
+              <option value="">-- Select a student --</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="portfolio-section" style="display:none">
+        <div class="tab-container">
+          <div class="tab-list">
+            <button class="tab-btn active" data-tab="tab-seminars">Seminars</button>
+            <button class="tab-btn" data-tab="tab-activities">Extracurricular Activities</button>
+          </div>
+
+          <!-- Seminars Tab -->
+          <div class="tab-content active" id="tab-seminars">
+            <div class="card-header" style="padding:1rem 0 0.75rem">
+              <h3>Seminar Records</h3>
+              <label>Scope <select id="seminar-scope-filter"><option value="">All scopes</option><option>Internal</option><option>External</option></select></label>
+              <button class="btn-primary btn-sm" id="add-seminar-btn">➕ Add Seminar</button>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Date</th><th>Title</th><th>Organized By</th><th>Scope</th><th>Type</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="seminars-tbody">
+                  <tr><td colspan="6" class="loading-cell">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Activities Tab -->
+          <div class="tab-content" id="tab-activities">
+            <div class="card-header" style="padding:1rem 0 0.75rem">
+              <h3>Student Activities</h3>
+              <label>Portfolio <select id="activity-group-filter"><option value="">All groups</option><option>Technical</option><option>Co-curricular</option><option>Extra-curricular</option></select></label>
+              <button class="btn-primary btn-sm" id="add-activity-btn">➕ Add Activity</button>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Date</th><th>Activity Name</th><th>Portfolio</th><th>Category</th><th>Description</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="activities-tbody">
+                  <tr><td colspan="6" class="loading-cell">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="no-student-msg" class="empty-state">
+        <div class="empty-icon">🏆</div>
+        <p>Select a student above to view their portfolio.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add Seminar Modal -->
+<div class="modal-overlay" id="seminar-modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="seminar-modal-title">Add Seminar</h3>
+      <button class="modal-close" onclick="closeModal('seminar-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="seminar-id">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="s-date">
+      </div>
+      <div class="form-group">
+        <label>Title *</label>
+        <input type="text" id="s-title" placeholder="Seminar title" required>
+      </div>
+      <div class="form-group">
+        <label>Organized By</label>
+        <input type="text" id="s-organized-by" placeholder="Organization name">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="s-type">
+          <option value="">Select type</option>
+          <option value="Technical">Technical</option>
+          <option value="Non-Technical">Non-Technical</option>
+          <option value="Workshop">Workshop</option>
+          <option value="Webinar">Webinar</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Scope *</label><select id="s-scope" required><option>Internal</option><option>External</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('seminar-modal')">Cancel</button>
+      <button class="btn-primary" id="save-seminar-btn">Save Seminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Activity Modal -->
+<div class="modal-overlay" id="activity-modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="activity-modal-title">Add Activity</h3>
+      <button class="modal-close" onclick="closeModal('activity-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="activity-id">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="a-date">
+      </div>
+      <div class="form-group">
+        <label>Activity Name *</label>
+        <input type="text" id="a-name" placeholder="Activity name" required>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="a-category">
+          <option value="">Select category</option>
+          <option value="Cultural">Cultural</option>
+          <option value="Sports">Sports</option>
+          <option value="Technical">Technical</option>
+          <option value="Social">Social</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Portfolio Group *</label><select id="a-portfolio-group" required><option>Technical</option><option>Co-curricular</option><option>Extra-curricular</option></select></div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="a-description" rows="3" placeholder="Brief description..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('activity-modal')">Cancel</button>
+      <button class="btn-primary" id="save-activity-btn">Save Activity</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/common.js"></script>
+<script src="/js/seminars.js"></script>
+</body>
+</html>

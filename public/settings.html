@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101b33">
+  <title>Account settings | StudentPro</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="settings-page">
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar-header" href="/dashboard.html" aria-label="StudentPro home">
+      <span class="brand-mark">S</span><span class="brand-copy"><strong>StudentPro</strong><small>Academic workspace</small></span>
+    </a>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <span class="nav-section-label">Workspace</span>
+      <a href="/dashboard.html" class="nav-item"><span class="nav-icon">&#9632;</span>Overview</a>
+      <a href="/students.html" class="nav-item"><span class="nav-icon">&#9787;</span>Students</a>
+      <a href="/semester-results.html" class="nav-item"><span class="nav-icon">&#9636;</span>Semester results</a>
+      <a href="/subject-marks.html" class="nav-item"><span class="nav-icon">&#9998;</span>Subject marks</a>
+      <a href="/academic-gaps.html" class="nav-item"><span class="nav-icon">&#9888;</span>Academic gaps</a>
+      <span class="nav-section-label nav-section-spaced">Engagement</span>
+      <a href="/seminars.html" class="nav-item"><span class="nav-icon">&#9733;</span>Seminars &amp; activities</a>
+      <a href="/reports.html" class="nav-item"><span class="nav-icon">&#9776;</span>Reports &amp; exports</a>
+      <a href="/settings.html" class="nav-item"><span class="nav-icon">&#9881;</span>Settings</a>
+    </nav>
+    <div class="sidebar-footer"><div class="admin-avatar">A</div><div><strong id="current-user">Admin</strong><small>Administrator</small></div><a href="#" id="logout-btn" aria-label="Log out">&#8594;</a></div>
+  </aside>
+  <main class="main-content">
+    <header class="top-bar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">&#9776;</button>
+      <div class="page-title"><h1>Account settings</h1><p>Update your sign-in credentials</p></div>
+      <div class="top-bar-right"><div class="user-info"><span class="top-avatar">A</span><span id="top-user">Admin</span></div></div>
+    </header>
+    <div class="content-body settings-content">
+      <section class="settings-intro">
+        <div class="settings-intro-mark">&#9881;</div>
+        <div><span class="settings-eyebrow">PERSONAL PREFERENCES</span><h2>Account &amp; security</h2><p>Manage your password and keep your administrator account protected.</p></div>
+      </section>
+      <div class="settings-layout">
+        <aside class="settings-security-panel">
+          <div class="security-orbit" aria-hidden="true"><span></span><span></span></div>
+          <div class="security-lock">&#128274;</div>
+          <span class="security-label">ACCOUNT SECURITY</span>
+          <h3>A safer sign-in starts here.</h3>
+          <p>Choose a password that is hard to guess and unique to your StudentPro account.</p>
+          <div class="security-divider"></div>
+          <div class="security-tip"><span>&#10003;</span><div><strong>Use 6 or more characters</strong><small>Longer passwords are even better.</small></div></div>
+          <div class="security-tip"><span>&#10003;</span><div><strong>Keep it private</strong><small>Do not reuse a shared password.</small></div></div>
+        </aside>
+        <section class="settings-password-card" aria-labelledby="password-heading">
+          <div class="settings-card-heading"><div class="settings-key-icon">&#9900;</div><div><span class="settings-eyebrow">SIGN-IN DETAILS</span><h3 id="password-heading">Change password</h3></div></div>
+          <p class="settings-card-copy">Enter your current password, then choose and confirm a new one.</p>
+          <form id="change-password-form" class="settings-password-form">
+            <div class="form-group"><label for="current-pass">Current password</label><input class="form-control" type="password" id="current-pass" name="currentPassword" placeholder="Enter current password" autocomplete="current-password" required></div>
+            <div class="form-group"><label for="new-pass">New password</label><input class="form-control" type="password" id="new-pass" name="newPassword" placeholder="At least 6 characters" autocomplete="new-password" required minlength="6"></div>
+            <div class="form-group"><label for="confirm-pass">Confirm new password</label><input class="form-control" type="password" id="confirm-pass" name="confirmPassword" placeholder="Type the new password again" autocomplete="new-password" required minlength="6"></div>
+            <div class="settings-form-footer"><span>All fields are required.</span><button type="submit" class="btn-primary"><span>Update password</span><b>&#8594;</b></button></div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="/js/common.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!await checkAuth()) return;
+  document.getElementById('change-password-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newPass = document.getElementById('new-pass').value;
+    const confirmPass = document.getElementById('confirm-pass').value;
+    if (newPass !== confirmPass) {
+      showToast('New passwords do not match', 'error');
+      return;
+    }
+    try {
+      const res = await fetch('/api/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentPassword: document.getElementById('current-pass').value,
+          newPassword: newPass
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Password updated successfully!');
+        document.getElementById('change-password-form').reset();
+      } else {
+        showToast(data.error || 'Failed to update password', 'error');
+      }
+    } catch {
+      showToast('Server error', 'error');
+    }
+  });
+});
+</script>
+</body>
+</html>
